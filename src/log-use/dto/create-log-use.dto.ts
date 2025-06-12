@@ -3,10 +3,10 @@ import { IsString, IsOptional, IsObject, IsDate } from 'class-validator';
 
 export class CreateLogUseDto {
   @IsString()
-  user_id: string;
+  userId: string;
 
   @IsString()
-  session_id: string;
+  sessionId: string;
 
   @IsString()
   action: string;
@@ -17,7 +17,7 @@ export class CreateLogUseDto {
 
   @IsOptional()
   @IsString()
-  url?: string;
+  current_url?: string;
 
   @IsOptional()
   @IsDate()

@@ -16,7 +16,7 @@ export class LogUse extends Document {
   label: string;
 
   @Prop()
-  url: string;
+  current_url: string;
 
   @Prop({ type: Date, default: Date.now })
   timestamp: Date;
