@@ -1,10 +1,11 @@
 import { Body, Controller, Get, Post, Query } from '@nestjs/common';
 import { LogUseService } from './log-use.service';
 import { CreateLogUseDto } from './dto/create-log-use.dto';
+import { SessionIdDto, UserIdDto, UserSessionQueryDto } from './dto/request-use-log.dto';
 
 @Controller('log-use')
 export class LogUseController {
-  constructor(private readonly logUseService: LogUseService) {}
+  constructor(private readonly logUseService: LogUseService) { }
 
   @Post()
   async createLog(@Body() createLogUseDto: CreateLogUseDto) {
@@ -12,8 +13,8 @@ export class LogUseController {
   }
 
   @Post('user')
-  async getLogsByUserId(@Body('user_id') user_id: string) {
-    const data = await this.logUseService.findByUserId(user_id);
+  async getLogsByUserId(@Body() dto: UserIdDto) {
+    const data = await this.logUseService.findByUserId(dto.user_id);
     return {
       status: 200,
       data,
@@ -21,22 +22,18 @@ export class LogUseController {
   }
 
   @Post('session')
-  async getLogsBySessionId(@Body('session_id') session_id: string) {
-    const data = await this.logUseService.findBySessionId(session_id);
-    return {
-      status: 200,
-      data,
-    };
+  async getLogsBySessionId(@Body() dto: SessionIdDto) {
+    const data = await this.logUseService.findBySessionId(dto.session_id);
+    return { status: 200, data };
   }
 
-  @Get()
-  async getLogs(
-    @Query('user_id') user_id?: string,
-    @Query('session_id') session_id?: string,
-  ) {
-    return this.logUseService.findLogs({
-      user_id: user_id,
-      session_id: session_id,
+  @Post('queryByUser-session')
+  async getLogs(@Body() dto: UserSessionQueryDto) {
+    const data = await this.logUseService.findLogs({
+      user_id: dto.user_id,
+      session_id: dto.session_id,
     });
+    return { status: 200, data };
   }
+
 }
